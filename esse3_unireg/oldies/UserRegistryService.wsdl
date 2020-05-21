@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<s0:definitions name="UserRegistryServiceDefinitions" targetNamespace="http://it/cineca/pda/ws/anagrafe" xmlns="" xmlns:s0="http://schemas.xmlsoap.org/wsdl/" xmlns:s1="http://it/cineca/pda/ws/anagrafe" xmlns:s2="java:it.cineca.pda" xmlns:s3="it.cineca.pda.unical.userservices.exceptions" xmlns:s4="it.cineca.pda.ws.anagrafe" xmlns:s5="http://schemas.xmlsoap.org/wsdl/soap/">
+  <s0:types>
+    <schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://pda.cineca.it/unical/anagrafe" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:cin="http://pda.cineca.it/unical/anagrafe">
+      <element name="userProperties">
+        <annotation>
+          <documentation>Comment describing your root element</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element maxOccurs="unbounded" name="userProperty" type="cin:userPropertyType"/>
+          </sequence>
+        </complexType>
+      </element>
+      <complexType name="userPropertyType">
+        <sequence>
+          <element name="propertyName" type="string"/>
+          <element name="propertyValue" type="string"/>
+        </sequence>
+      </complexType>
+    </schema>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="it.cineca.pda.ws.anagrafe" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="string" type="xs:string"/>
+    </xs:schema>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://it/cineca/pda/ws/anagrafe" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="java:it.cineca.pda.ws.anagrafe"/>
+      <xs:import namespace="http://pda.cineca.it/unical/anagrafe"/>
+      <xs:element name="getUserProperties">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="username" type="xs:string"/>
+            <xs:element name="codiceAteneo" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getUserPropertiesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="anag:userProperties" xmlns:anag="http://pda.cineca.it/unical/anagrafe"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getUserDetails">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="username" type="xs:string"/>
+            <xs:element name="codiceAteneo" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getUserDetailsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="java:User" xmlns:java="java:it.cineca.pda.ws.anagrafe"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="it.cineca.pda.unical.userservices.exceptions" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="string" type="xs:string"/>
+    </xs:schema>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="java:it.cineca.pda.unical.userservices.exceptions" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="UserNotFoundException"/>
+      <xs:element name="UserNotFoundException" type="java:UserNotFoundException" xmlns:java="java:it.cineca.pda.unical.userservices.exceptions"/>
+    </xs:schema>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="java:it.cineca.pda" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="SystemException"/>
+      <xs:element name="SystemException" type="java:SystemException" xmlns:java="java:it.cineca.pda"/>
+    </xs:schema>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="java:it.cineca.pda.ws.anagrafe" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="InvalidAteneoException"/>
+      <xs:complexType name="User">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="Birthdate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="Birthplace" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="CodiceFiscale" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Email" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Name" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Nationality" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Passport" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Sex" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Surname" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Username" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="InvalidAteneoException" type="java:InvalidAteneoException" xmlns:java="java:it.cineca.pda.ws.anagrafe"/>
+    </xs:schema>
+  </s0:types>
+  <s0:message name="getUserProperties">
+    <s0:part element="s1:getUserProperties" name="parameters"/>
+  </s0:message>
+  <s0:message name="getUserPropertiesResponse">
+    <s0:part element="s1:getUserPropertiesResponse" name="parameters"/>
+  </s0:message>
+  <s0:message name="SystemException">
+    <s0:part element="s2:SystemException" name="SystemException"/>
+  </s0:message>
+  <s0:message name="UserNotFoundException">
+    <s0:part element="s3:string" name="UserNotFoundException"/>
+  </s0:message>
+  <s0:message name="InvalidAteneoException">
+    <s0:part element="s4:string" name="InvalidAteneoException"/>
+  </s0:message>
+  <s0:message name="getUserDetails">
+    <s0:part element="s1:getUserDetails" name="parameters"/>
+  </s0:message>
+  <s0:message name="getUserDetailsResponse">
+    <s0:part element="s1:getUserDetailsResponse" name="parameters"/>
+  </s0:message>
+  <s0:portType name="UserRegistry">
+    <s0:operation name="getUserProperties" parameterOrder="parameters">
+      <s0:input message="s1:getUserProperties"/>
+      <s0:output message="s1:getUserPropertiesResponse"/>
+      <s0:fault message="s1:SystemException" name="SystemException"/>
+      <s0:fault message="s1:UserNotFoundException" name="UserNotFoundException"/>
+      <s0:fault message="s1:InvalidAteneoException" name="InvalidAteneoException"/>
+    </s0:operation>
+    <s0:operation name="getUserDetails" parameterOrder="parameters">
+      <s0:input message="s1:getUserDetails"/>
+      <s0:output message="s1:getUserDetailsResponse"/>
+      <s0:fault message="s1:SystemException" name="SystemException"/>
+      <s0:fault message="s1:UserNotFoundException" name="UserNotFoundException"/>
+      <s0:fault message="s1:InvalidAteneoException" name="InvalidAteneoException"/>
+    </s0:operation>
+  </s0:portType>
+  <s0:binding name="UserRegistryServiceSoapBinding" type="s1:UserRegistry">
+    <s5:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <s0:operation name="getUserProperties">
+      <s5:operation soapAction="" style="document"/>
+      <s0:input>
+        <s5:body parts="parameters" use="literal"/>
+      </s0:input>
+      <s0:output>
+        <s5:body parts="parameters" use="literal"/>
+      </s0:output>
+      <s0:fault name="SystemException">
+        <s5:fault name="SystemException" use="literal"/>
+      </s0:fault>
+      <s0:fault name="InvalidAteneoException">
+        <s5:fault name="InvalidAteneoException" use="literal"/>
+      </s0:fault>
+      <s0:fault name="UserNotFoundException">
+        <s5:fault name="UserNotFoundException" use="literal"/>
+      </s0:fault>
+    </s0:operation>
+    <s0:operation name="getUserDetails">
+      <s5:operation soapAction="" style="document"/>
+      <s0:input>
+        <s5:body parts="parameters" use="literal"/>
+      </s0:input>
+      <s0:output>
+        <s5:body parts="parameters" use="literal"/>
+      </s0:output>
+      <s0:fault name="SystemException">
+        <s5:fault name="SystemException" use="literal"/>
+      </s0:fault>
+      <s0:fault name="InvalidAteneoException">
+        <s5:fault name="InvalidAteneoException" use="literal"/>
+      </s0:fault>
+      <s0:fault name="UserNotFoundException">
+        <s5:fault name="UserNotFoundException" use="literal"/>
+      </s0:fault>
+    </s0:operation>
+  </s0:binding>
+  <s0:service name="UserRegistryService">
+    <s0:port binding="s1:UserRegistryServiceSoapBinding" name="UserRegistrySoapPort">
+      <s5:address location="http://ateneiqa-unical.cineca.it/services/UserRegistry"/>
+    </s0:port>
+  </s0:service>
+</s0:definitions>
