@@ -14,20 +14,7 @@ FQDN = getattr(settings, 'FQDN', 'http://localhost:8000')
 
 
 class User(xsd.ComplexType):
-    """<xs:complexType name="User">
-        <xs:sequence>
-          <xs:element minOccurs="1" name="Birthdate" nillable="true" type="xs:dateTime"/>
-          <xs:element minOccurs="1" name="Birthplace" nillable="true" type="xs:string"/>
-          <xs:element minOccurs="1" name="CodiceFiscale" nillable="true" type="xs:string"/>
-          <xs:element minOccurs="1" name="Email" nillable="true" type="xs:string"/>
-          <xs:element minOccurs="1" name="Name" nillable="true" type="xs:string"/>
-          <xs:element minOccurs="1" name="Nationality" nillable="true" type="xs:string"/>
-          <xs:element minOccurs="1" name="Passport" nillable="true" type="xs:string"/>
-          <xs:element minOccurs="1" name="Sex" nillable="true" type="xs:string"/>
-          <xs:element minOccurs="1" name="Surname" nillable="true" type="xs:string"/>
-          <xs:element minOccurs="1" name="Username" nillable="true" type="xs:string"/>
-        </xs:sequence>
-      </xs:complexType>
+    """
     """
     CodiceFiscale  = xsd.Element(xsd.String, minOccurs=1, nillable=True)
     Username = xsd.Element(xsd.String, minOccurs=1, nillable=True)
