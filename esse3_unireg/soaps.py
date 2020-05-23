@@ -1,7 +1,15 @@
+import logging
+
 from django.conf import settings
 from django.utils.module_loading import import_string
 from soapfish import soap, xsd
 
+from . soap_exceptions import (Schema_UserNotFoundException,
+                               UserNotFoundException,
+                               Schema_SystemException,
+                               SystemException)
+
+logger = logging.getLogger(__name__)
 FQDN = getattr(settings, 'FQDN', 'http://localhost:8000')
 
 
@@ -32,13 +40,16 @@ class User(xsd.ComplexType):
     Sex = xsd.Element(xsd.String, minOccurs=1, nillable=True)
     Surname = xsd.Element(xsd.String, minOccurs=1, nillable=True)
 
+    def __repr__(self):
+        return '{} [{}]'.format(self.Username, self.CodiceFiscale)
+
 
 class GetUser(xsd.ComplexType):
     CodiceFiscale  = xsd.Element(xsd.String, minOccurs=1, nillable=True)
     Username = xsd.Element(xsd.String, minOccurs=1, nillable=True)
 
 
-Schema = xsd.Schema(
+Schema_User = xsd.Schema(
     targetNamespace='{}/soap/user.xsd'.format(FQDN),
     elementFormDefault='unqualified',
     simpleTypes=[],
@@ -56,9 +67,16 @@ def get_user_details(request, user_id):
     Fill the method you need to get the users values
     and return a User ComplexType
     """
-    func = import_string(getattr(settings, 'SOAP_UNIREG_IDENTITY_HANDLER'))
-    res = func(user_id)
-    #  import pdb; pdb.set_trace()
+    try:
+        func = import_string(getattr(settings, 'SOAP_UNIREG_IDENTITY_HANDLER'))
+        res = func(user_id)
+    except Exception as e:
+        _msg = 'SOAP Internal ERROR: {}'.format(e)
+        logger.error(_msg)
+        return SystemException(Message=_msg, Code=500 )
+    if not res:
+        return UserNotFoundException(Message='User [{}] not found'.format(user_id),
+                                     Code=404)
     return User(**res)
 
 
@@ -66,26 +84,33 @@ get_user_details_method = xsd.Method(
     function=get_user_details,
     soapAction='{}/soap/user_registry/get_user_details'.format(FQDN),
     input='getUser',
+    #  inputPartName='parameters',
     output='user',
+    #  outputPartName='parameters',
     operationName='GetUser',
+    #  style='document'
 )
 
 
 UserRegistrySoapService = soap.Service(
+    name = 'UserRegistrySoapPort',
     targetNamespace='{}/soap/user_registry.wsdl'.format(FQDN),
     location='{}/soap/user_registry'.format(FQDN),  # where request should be sent.
-    schemas=[Schema,],
+    schemas=[Schema_User,
+             #  Schema_UserNotFoundException,
+             #  Schema_SystemException
+             ],
+    #  version=soap.SOAPVersion.SOAP11,
     methods=[get_user_details_method],
 )
 
 
 if __name__ == '__main__':
-    usr_prop = UserProperty()
-    usr_prop.username = 'that-guy'
-    usr_prop.codiceateneo = 'unical'
+    user = User()
+    user.Username = 'that-guy'
 
     # export to xml
-    xml = usr_prop.xml('user_registry').decode()
+    xml = user.xml('user_registry').decode()
     print(xml)
 
     # parse from xml
