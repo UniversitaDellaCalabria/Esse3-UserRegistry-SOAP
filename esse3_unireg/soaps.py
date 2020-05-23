@@ -10,7 +10,6 @@ from . soap_exceptions import (Schema_UserNotFoundException,
                                SystemException)
 
 logger = logging.getLogger(__name__)
-FQDN = getattr(settings, 'FQDN', 'http://localhost:8000')
 
 
 class User(xsd.ComplexType):
@@ -38,15 +37,15 @@ class GetUser(xsd.ComplexType):
 
 
 Schema_User = xsd.Schema(
-    targetNamespace='{}/soap/user.xsd'.format(FQDN),
+    targetNamespace='{}/soap/User.xsd'.format(settings.FQDN),
     elementFormDefault='unqualified',
     simpleTypes=[],
     attributeGroups=[],
     groups=[],
-    complexTypes=[User, GetUser], # Status],
+    complexTypes=[User, GetUser, UserNotFoundException],
     elements = {
                 'getUser': xsd.Element(GetUser),
-                'user': xsd.Element(User)},
+                'User': xsd.Element(User)},
 )
 
 
@@ -72,10 +71,10 @@ def get_user_details(request, user_id):
 
 get_user_details_method = xsd.Method(
     function=get_user_details,
-    soapAction='{}/soap/user_registry/get_user_details'.format(FQDN),
+    soapAction='{}/soap/user_registry/get_user_details'.format(settings.FQDN),
     input='getUser',
     #  inputPartName='parameters',
-    output='user',
+    output='User',
     #  outputPartName='parameters',
     operationName='GetUser',
     #  style='document'
@@ -84,8 +83,8 @@ get_user_details_method = xsd.Method(
 
 UserRegistrySoapService = soap.Service(
     name = 'UserRegistrySoapPort',
-    targetNamespace='{}/soap/user_registry.wsdl'.format(FQDN),
-    location='{}/soap/user_registry'.format(FQDN),  # where request should be sent.
+    targetNamespace='{}/soap/user_registry.wsdl'.format(settings.FQDN),
+    location='{}/soap/user_registry'.format(settings.FQDN),  # where request should be sent.
     schemas=[Schema_User,
              #  Schema_UserNotFoundException,
              #  Schema_SystemException

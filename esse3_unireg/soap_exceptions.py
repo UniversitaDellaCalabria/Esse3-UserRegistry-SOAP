@@ -1,3 +1,4 @@
+from django.conf import settings
 from soapfish import xsd
 
 
@@ -8,7 +9,7 @@ class UserNotFoundException(xsd.ComplexType):
 
 
 Schema_UserNotFoundException = xsd.Schema(
-    targetNamespace='/soap/user/exceptions/not-found',
+    targetNamespace='{}/soap/User.xsd'.format(settings.FQDN),
     elementFormDefault='qualified',
     simpleTypes=[],
     attributeGroups=[],
