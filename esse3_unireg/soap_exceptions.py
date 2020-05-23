@@ -2,13 +2,12 @@ from soapfish import xsd
 
 
 class UserNotFoundException(xsd.ComplexType):
-    Message = xsd.Element(xsd.String, minOccurs=1, nillable=True)
-    Code = xsd.Element(xsd.Integer, minOccurs=1, nillable=True)
+    #  name = xsd.Element(xsd.String, minOccurs=1, nillable=True)
+    #  type = xsd.Element(xsd.Integer, minOccurs=1, nillable=True)
+    pass
 
 
 Schema_UserNotFoundException = xsd.Schema(
-    imports=[],
-    includes=[],
     targetNamespace='/soap/user/exceptions/not-found',
     elementFormDefault='qualified',
     simpleTypes=[],
@@ -19,8 +18,9 @@ Schema_UserNotFoundException = xsd.Schema(
 )
 
 class SystemException(xsd.ComplexType):
-    Message = xsd.Element(xsd.String, minOccurs=1, nillable=True)
-    Code = xsd.Element(xsd.Integer, minOccurs=1, nillable=True)
+    #  name = xsd.Element(xsd.String, minOccurs=1, nillable=True)
+    #  type = xsd.Element(xsd.Integer, minOccurs=1, nillable=True)
+    pass
 
 
 Schema_SystemException = xsd.Schema(

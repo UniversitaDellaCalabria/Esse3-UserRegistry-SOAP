@@ -61,11 +61,10 @@ def get_user_details(request, user_id):
     except Exception as e:
         _msg = 'SOAP Internal ERROR: {}'.format(e)
         logger.error(_msg)
-        return SystemException(Message=_msg, Code=500 )
+        return SystemException()
     if not res:
         logger.warn('The user [{}] does not exists'.format(user_id))
-        return UserNotFoundException(Message='User [{}] not found'.format(user_id),
-                                     Code=404)
+        return UserNotFoundException()
     user = User(**res)
     logger.debug('User [{}] found'.format(user))
     return user
