@@ -1,5 +1,6 @@
 # Esse3-UserRegistry-SOAP
-Servizio SOAP che consente a Cineca Esse3 di interrogare le informazioni anagrafiche degli utenti
+Servizio SOAP che consente a Cineca Esse3 di interrogare le informazioni anagrafiche degli utenti.
+
 
 #### Example
 ````
@@ -15,6 +16,17 @@ cd example
 - http://localhost:8000/soap/user_registry
 
 
+#### Configuration
+
+In `settings.py` configure `SOAP_UNIREG_IDENTITY_HANDLER` to handle the SOAP query
+to one or many data sources, see `example.exampe.settings.py`.
+
+Example
+````
+# SOAP get_user_details identity handler
+SOAP_UNIREG_IDENTITY_HANDLER = 'esse3_unireg.identity_handlers.identity_example'
+````
+
 #### Usage
 
 ````
@@ -22,16 +34,18 @@ from zeep import Client
 
 client = Client('http://localhost:8000/soap/user_registry?wsdl')
 
-client.service.GetUser(Username='pippo')
-client.service.GetUser(CodiceFiscale='sdfgdfysdf767f8g')
+client.service.GetUser(Username='gdm')
+client.service.GetUser(CodiceFiscale='ciccio18')
 ````
 
 
 #### SoapFish hints
+
+Just to take a look to a wsdl to py code...
 ```
 wsdl2py -s UserRegistryService.wsdl
 ```
 
 
-#### Risorse
+#### Resources
 - https://github.com/soapteam/soapfish/blob/master/docs/tutorial.rst

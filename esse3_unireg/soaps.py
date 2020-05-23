@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.utils.module_loading import import_string
 from soapfish import soap, xsd
 
 FQDN = getattr(settings, 'FQDN', 'http://localhost:8000')
@@ -36,11 +37,6 @@ class GetUser(xsd.ComplexType):
     CodiceFiscale  = xsd.Element(xsd.String, minOccurs=1, nillable=True)
     Username = xsd.Element(xsd.String, minOccurs=1, nillable=True)
 
-#  class Status(xsd.ComplexType):
-    #  INHERITANCE = None
-    #  INDICATOR = xsd.Sequence
-    #  action = xsd.Element(xsd.String(enumeration=['INSERTED', 'UPDATED', 'EXISTS']))
-    #  id = xsd.Element(xsd.Long)
 
 Schema = xsd.Schema(
     targetNamespace='{}/soap/user.xsd'.format(FQDN),
@@ -55,14 +51,15 @@ Schema = xsd.Schema(
 )
 
 
-def get_user_details(request, user):
+def get_user_details(request, user_id):
     """
     Fill the method you need to get the users values
     and return a User ComplexType
     """
-    import pdb; pdb.set_trace()
-    print(user.username)
-    return User(username=user.username)
+    func = import_string(getattr(settings, 'SOAP_UNIREG_IDENTITY_HANDLER'))
+    res = func(user_id)
+    #  import pdb; pdb.set_trace()
+    return User(**res)
 
 
 get_user_details_method = xsd.Method(

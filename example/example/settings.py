@@ -120,3 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# SOAP get_user_details identity handler
+SOAP_UNIREG_IDENTITY_HANDLER = 'esse3_unireg.identity_handlers.identity_example'
