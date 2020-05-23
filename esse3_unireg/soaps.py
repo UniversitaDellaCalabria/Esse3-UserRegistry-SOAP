@@ -28,7 +28,8 @@ class User(xsd.ComplexType):
     Surname = xsd.Element(xsd.String, minOccurs=1, nillable=True)
 
     def __repr__(self):
-        return '{} [{}]'.format(self.Username, self.CodiceFiscale)
+        return '{} [{}]'.format(self.Username,
+                                self.CodiceFiscale)
 
 
 class GetUser(xsd.ComplexType):
@@ -62,9 +63,12 @@ def get_user_details(request, user_id):
         logger.error(_msg)
         return SystemException(Message=_msg, Code=500 )
     if not res:
+        logger.warn('The user [{}] does not exists'.format(user_id))
         return UserNotFoundException(Message='User [{}] not found'.format(user_id),
                                      Code=404)
-    return User(**res)
+    user = User(**res)
+    logger.debug('User [{}] found'.format(user))
+    return user
 
 
 get_user_details_method = xsd.Method(
